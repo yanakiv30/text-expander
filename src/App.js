@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./styles.css";
 
 export default function App() {
@@ -24,7 +25,7 @@ export default function App() {
         foot on the moon or when rovers were sent to roam around on Mars.
       </TextExpander>
 
-      <TextExpander buttonInline={false} className="box">
+      <TextExpander expanded={true} className="box">
         Space missions have given us incredible insights into our universe and
         have inspired future generations to keep reaching for the stars. Space
         travel is a pretty cool thing to think about. Who knows what we'll
@@ -34,14 +35,32 @@ export default function App() {
   );
 }
 
-function TextExpander({ 
-  collapsedNumWords,
-  expandButtonText,
-  collapseButtonText,  
-  buttonColor,
-  buttonInline,
+function TextExpander({
+  collapsedNumWords = 10,
+  expandButtonText = "Show more",
+  collapseButtonText = "Show less",
+  buttonColor= "#1f09cd",
+  expanded = false,
   className,
   children
 }) {
-  return <div className={className}>{children}</div>;
+  const [isExpanded, setIsExpanded] = useState(expanded);
+  const displayText = isExpanded ? children :
+    `${children.split(' ').slice(0, collapsedNumWords).join(' ')}...`  ;
+
+    const buttonStyle = {
+      background: "none",
+      border: "none",
+      font: "inherit",
+      cursor: "pointer",
+      color: buttonColor
+    };
+ 
+  return <div className={className}>
+    <span> {displayText} </span>
+    <button onClick={() => setIsExpanded(x => !x)} style={buttonStyle}>
+      {isExpanded ? collapseButtonText : expandButtonText}
+      
+    </button>
+  </div>;
 }
